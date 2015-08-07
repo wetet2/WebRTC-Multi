@@ -1,0 +1,47 @@
+<html>
+    <head>
+        <title>--------</title>
+        <link rel="stylesheet" href="/css/data.css" />
+    </head>
+    <body>
+
+        <div>
+            <input type="text" id="msgInput" placeholder="Message..." />
+            <button id="btnStream">Stream Start</button>
+            <button id="btnDiconnectSocket">Disconnect</button>
+            <button id="btnReconnect" style='display:none'>Reconnect</button>
+            <button id="btnRefresh">Refresh</button>
+        </div>
+        <div>
+            <input type="file" id="fileTransfer" />
+            <button id="btnFileTranster">Transfer</button>
+        </div>
+        <div id="divFiles">
+
+        </div>
+        <div id="divChat">
+        </div>
+        <div id="divAudio">
+        </div>
+        </div>
+        <div id="divVideo">
+        </div>
+
+        <script type="text/javascript">
+            var initRoomId = '<%= roomId %>';
+            var initUser = '<%= user %>';
+        </script>
+
+        <script src="/lib/jquery-2.1.4.min.js"></script>
+        <script src="/lib/socket.io-1.3.5.js"></script>
+        <script src="/lib/adapter.js"></script>
+        <script src="/lib/getScreenId.js"></script>
+
+        <script src="/js/common.js"></script>
+        <script src="/js/peer.js"></script>
+        <script src="/js/socket.js"></script>
+        <script src="/js/view.js"></script>
+        <script src="/js/file.js"></script>
+
+    </body>
+</html>

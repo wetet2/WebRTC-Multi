@@ -1,0 +1,80 @@
+<html>
+
+    <body>
+
+        <a id='linkChromeApp' href="https://chrome.google.com/webstore/detail/screen-capturing-test/efgmfmhdfdjomdeogeoedbblfjanfdjj" target="_blank" >Install Chrome Extension</a>
+        <br>
+        <a id='linkSocketOpen' href="https://192.168.245.171:10280" target="_blank" >Open socket</a><br><br>
+        Subject : <input id="inputSubject" type="text" />&nbsp;
+        Description : <input id="inputDesc" type="text" />&nbsp;
+        <button id='btnMakeRoom'>Make Room</button>
+
+        <div id="divRoomList" style="margin-top:20px">
+
+        </div>
+    </body>
+
+    <script src="/lib/jquery-2.1.4.min.js"></script>
+    <script src="/lib/socket.io-1.3.5.js"></script>
+    <script src="/js/common.js"></script>
+    <script type='text/javascript'>
+        var socket;
+        var loopRefresh;
+        var socketHost = 'https://192.168.245.171:10280';
+
+        $(function(){
+
+            var user = getURLParameter('user');
+            var btnPostStart = $('#btnPostStart');
+            var btnGetStart = $('#btnGetStart');
+            var btnMakeRoom = $('#btnMakeRoom');
+            var divRoomList = $('#divRoomList')[0];
+
+
+            socket = io.connect(socketHost ,{reconnection:false});
+
+            socket.on('connection',function(msg){
+                console.log('Socket has been connected');
+            })
+
+            socket.on('room-made', function(msg){
+                location.href = '/main/'+msg.roomId+'/'+user;
+            });
+
+            getRoomList();
+            loopRefresh = setInterval(getRoomList, 3000);
+
+            btnMakeRoom.on('click',function(){
+                var inputSubject = $('#inputSubject');
+                var inputDesc = $('#inputDesc');
+                var roomInfo = {subject:inputSubject.val(), desc:inputDesc.val()};
+                socket.emit('room-make', roomInfo);
+            })
+
+            function getRoomList(){
+                $.ajax({
+                    type: 'GET',
+                    contentType: 'application/json',
+                    url: 'https://192.168.245.171:10280/service/getRoomList',
+                    success: function(data) {
+                        divRoomList.innerHTML = '';
+                        for(var key in data){
+                            // var html = '<div style="float:left"><h1>'+data[key].subject+'</h1></div>&nbsp;'
+                            //     +'<div style="float:left, margin-left:5px"><span>'+data[key].desc+'</span></div>'
+                            //     +'<div style="float:left"><a href="'+mainPage + '?roomId='+key+'&user='+user+'">Join</button></div><br><br>';
+                            var html = '<div style="float:left"><h1>'+data[key].subject+'</h1></div>&nbsp;'
+                                +'<div style="float:left, margin-left:5px"><span>'+data[key].desc+'</span></div>'
+                                +'<div style="float:left"><a href="/main/'+key+'/'+user+'">Join</button></div><br><br>';
+                            divRoomList.innerHTML = divRoomList.innerHTML + html;
+                        }
+                    },
+                    error: function(e){
+                        console.error(e);
+                    }
+                });
+            }
+
+        })
+    </script>
+
+</html>

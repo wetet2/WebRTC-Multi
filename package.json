@@ -1,0 +1,32 @@
+{
+  "name": "webrtc-multi",
+  "version": "1.0.0",
+  "description": "Mixed webrtc features; multi chatting, multi webcam, multi file sharing, multi screen sharing with chrome extension",
+  "main": "server.js",
+  "dependencies": {
+    "body-parser": "^1.13.3",
+    "express": "^4.13.1",
+    "path": "^0.11.14",
+    "ejs": "^2.3.3",
+    "node-uuid": "^1.4.3",
+    "socket.io": "^1.3.6"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "node server.js",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wetet2/WebRTC-Multi.git"
+  },
+  "keywords": [
+    "webrtc"
+  ],
+  "author": "HoyoonLee",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/wetet2/WebRTC-Multi/issues"
+  },
+  "homepage": "https://github.com/wetet2/WebRTC-Multi#readme"
+}

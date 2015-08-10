@@ -34,14 +34,14 @@ app.get('/',function(req, res){
     res.sendFile(__dirname + '/webrtc/rooms.html');
 });
 
+app.get('/main_cam/:roomId/:user',function(req, res){
+    console.log('/main_cam/:roomId/:user');
+    res.render('main_cam.html',{roomId:req.params.roomId,user:req.params.user});
+});
+
 app.get('/main/:roomId/:user',function(req, res){
     console.log('/main/:roomId/:user');
-
     res.render('main.html',{roomId:req.params.roomId,user:req.params.user});
-
-    // res.redirect('/main?roomId=123&user=hoyoon');
-    // res.sendFile(__dirname + '/webrtc/main.html'+'?roomId='+req.param.roomId+'&user='+req.params.user);
-    // res.sendFile(__dirname + '/webrtc/main.html');
 });
 
 app.get('/DetectRTC',function(req, res){
@@ -73,6 +73,10 @@ https.listen(port, function(){
     console.log('Server listening on '+ port +' port');
 });
 
+
+//////////////////////////////////////////////////////////////////
+//////////////////////// WebSocket ///////////////////////////////
+//////////////////////////////////////////////////////////////////
 var sockets = [];
 var rooms = {};
 io.on('connection', function(socket){
@@ -86,7 +90,7 @@ io.on('connection', function(socket){
         var roomUuid = uuid.v1();
         if(!rooms[roomUuid]){
             rooms[roomUuid] = msg;
-            socket.emit('room-made',{roomId:roomUuid})
+            socket.emit('room-made',{roomId:roomUuid, type:msg.type})
         }
     });
 

@@ -6,7 +6,8 @@
         <br>
         Subject : <input id="inputSubject" type="text" />&nbsp;
         Description : <input id="inputDesc" type="text" />&nbsp;
-        <button id='btnMakeRoom'>Make Room</button>
+        <button id='btnMakeRoom'>Make Room For Screen-Sharing</button>
+        <button id='btnMakeRoomVideo'>Make Room For Webcam</button>
 
         <div id="divRoomList" style="margin-top:20px">
 
@@ -27,8 +28,8 @@
             var btnPostStart = $('#btnPostStart');
             var btnGetStart = $('#btnGetStart');
             var btnMakeRoom = $('#btnMakeRoom');
+            var btnMakeRoomVideo = $('#btnMakeRoomVideo');
             var divRoomList = $('#divRoomList')[0];
-
 
             socket = io.connect(socketHost ,{reconnection:false});
 
@@ -37,7 +38,12 @@
             })
 
             socket.on('room-made', function(msg){
-                location.href = '/main/'+msg.roomId+'/'+user;
+                if(msg.type == 'screen'){
+                    location.href = '/main/'+msg.roomId+'/'+user;
+                }else if(msg.type == 'video'){
+                    location.href = '/main_cam/'+msg.roomId+'/'+user;
+                }
+
             });
 
             getRoomList();
@@ -47,8 +53,18 @@
                 var inputSubject = $('#inputSubject');
                 var inputDesc = $('#inputDesc');
                 var roomInfo = {subject:inputSubject.val(), desc:inputDesc.val()};
+                roomInfo.type = 'screen';
                 socket.emit('room-make', roomInfo);
             })
+
+            btnMakeRoomVideo.on('click',function(){
+                var inputSubject = $('#inputSubject');
+                var inputDesc = $('#inputDesc');
+                var roomInfo = {subject:inputSubject.val(), desc:inputDesc.val()};
+                roomInfo.type = 'video';
+                socket.emit('room-make', roomInfo);
+            })
+
 
             function getRoomList(){
                 $.ajax({
@@ -58,17 +74,16 @@
                     success: function(data) {
                         divRoomList.innerHTML = '';
                         for(var key in data){
-                            // var html = '<div style="float:left"><h1>'+data[key].subject+'</h1></div>&nbsp;'
-                            //     +'<div style="float:left, margin-left:5px"><span>'+data[key].desc+'</span></div>'
-                            //     +'<div style="float:left"><a href="'+mainPage + '?roomId='+key+'&user='+user+'">Join</button></div><br><br>';
-                            // var html = '<div style="font-size:20px"><b>'+data[key].subject+'</b></div>'
-                            //     +'<div><span>'+data[key].desc+'</span></div>'
-                            //     +'<div><a href="/main/'+key+'/'+user+'">Join</button></div><br><br>';
                             var html = '<table><tr>'
                                 +'<td style="font-size:30px; font-weight:bold">'+data[key].subject+'</td>'
-                                +'<td>'+data[key].desc+'</td>'
-                                +'<td><a href="/main/'+key+'/'+user+'">Join</a></td>'
-                                +'</tr></table>';
+                                +'<td>'+data[key].desc+'</td>';
+                            if(data[key].type == 'screen'){
+                                html += '<td><a href="/main/'+key+'/'+user+'">Join</a></td>';
+                            }else if(data[key].type == 'video'){
+                                html += '<td><a href="/main_cam/'+key+'/'+user+'">Join</a></td>';
+                            }
+                            html += '</tr></table>';
+
                             divRoomList.innerHTML = divRoomList.innerHTML + html;
                         }
                     },

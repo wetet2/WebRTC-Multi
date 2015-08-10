@@ -100,6 +100,11 @@ io.on('connection', function(socket){
         io.to(joinRoomId).emit('new-user',msg);
     });
 
+    socket.on('stream-start', function(msg){
+        console.log('stream starter : ' + msg.id);
+        io.to(joinRoomId).emit('stream-start',msg);
+    });
+
     socket.on('disconnect', function(){
         console.log('disconnected : '+peerId);
         io.to(joinRoomId).emit('disconnect-user',{ by:peerId });

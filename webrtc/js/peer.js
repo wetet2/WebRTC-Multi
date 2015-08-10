@@ -33,7 +33,7 @@ $(function(){
 
     startStream = function(){
 
-        ////////// 화면 공유 //////////
+        ////////// Screen Capturing //////////
         getScreenId(function (error, sourceId, screen_constraints) {
             navigator.getUserMedia = navigator.mozGetUserMedia || navigator.webkitGetUserMedia;
             navigator.getUserMedia(screen_constraints, function (stream) {
@@ -46,17 +46,17 @@ $(function(){
             });
         });
 
-        ////////// 화상 채팅 //////////
+        ////////// Using Webcam without video //////////
         navigator.getUserMedia({
             audio: true,
-            video: {
-                mandatory:{
-                maxWidth: 200,
-                maxHeight: 150,
-                minAspectRatio: 1.33
-                }
-            }
-            // video: false
+            // video: {
+            //     mandatory:{
+            //     maxWidth: 200,
+            //     maxHeight: 150,
+            //     minAspectRatio: 1.33
+            //     }
+            // }
+            video: false
         }, function(stream){
             stream.type = 'audio';
             gotStream(stream);
@@ -65,7 +65,7 @@ $(function(){
             console.error(error);
         });
 
-        ////////// 화상 채팅2 //////////
+        ////////// Another usage for using Webcam //////////
         // navigator.mediaDevices.getUserMedia({
         //     audio: true,
         //     video: {
@@ -88,17 +88,17 @@ $(function(){
     function gotStream(stream){
         console.log('gotStream');
         localStream[stream.type] = stream;
-        addVideo(stream, 'self_stream_' + stream.type);
+        addMedia(stream, 'self_stream_' + stream.type);
 
         if(localStream['screen'] && localStream['audio']){
-            socket.emit('new-user', {id:uuid});
+            // socket.emit('new-user', {id:uuid});
+            socket.emit('stream-start', {id:uuid});
         }
 
     }
 
     makeOffer = function(toId){
 
-        // Audio Offer
         var peerAudio = getPeer(toId, localStream['audio'], 'audio');
         if(peerAudio){
             peerAudio.createOffer(
@@ -116,7 +116,6 @@ $(function(){
             console.error('Invalid peer');
         }
 
-        // Screen Offer
         var peerScreen = getPeer(toId, localStream['screen'], 'screen');
         if(peerScreen){
             peerScreen.createOffer(
@@ -157,7 +156,8 @@ $(function(){
                 peerScreen.addStream(stream);
             }
             peerScreen.onaddstream = function(e){
-                addVideo(e.stream, id +'_screen');
+                e.stream.type = 'screen';
+                addMedia(e.stream, id +'_screen');
             };
 
             var dataConstraint = null;
@@ -181,7 +181,8 @@ $(function(){
                 peerAudio.addStream(stream);
             }
             peerAudio.onaddstream = function(e){
-                addAudio(e.stream, id+'_audio');
+                e.stream.type = 'audio';
+                addMedia(e.stream, id+'_audio');
             }
         }
 

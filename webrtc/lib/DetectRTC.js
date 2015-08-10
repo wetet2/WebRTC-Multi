@@ -29,7 +29,7 @@ DetectRTC.screen = {
         }
     },
     getChromeExtensionStatus: function (callback) {
-        // https://chrome.google.com/webstore/detail/screen-capturing/ajhifddimkapgcifgcodmmfdlknahffk
+        // https://chrome.google.com/webstore/detail/screen-capturing-test/efgmfmhdfdjomdeogeoedbblfjanfdjj
         var extensionid = 'efgmfmhdfdjomdeogeoedbblfjanfdjj';
 
         var image = document.createElement('img');

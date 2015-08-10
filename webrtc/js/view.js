@@ -1,8 +1,7 @@
 
 //public function
 var addChatContent;
-var addVideo;
-var addAudio;
+var addMedia;
 var addFile;
 var removeVideo;
 var getSelectedFileName;
@@ -10,7 +9,6 @@ var getSelectedFileName;
 $(function(){
 
     var msgInput = $('#msgInput');
-    var btnDiconnectSocket = $('#btnDiconnectSocket');
     var btnStream = $('#btnStream');
     var btnReconnect = $('#btnReconnect');
     var btnRefresh = $('#btnRefresh');
@@ -31,37 +29,34 @@ $(function(){
     addChatContent = function(msg){
         divChat.append(msg+'<br>');
     }
-    addVideo = function(stream, id){
 
+    addMedia = function(stream, id){
         if(stream.id == 'default') return;
 
-        var video = document.createElement('video');
-        video.setAttribute('autoplay','');
-        video.setAttribute('id',id);
-        video.setAttribute('style','width:'+defatulVideoWidth+' ; height:'+defatulVideoHeight+'')
-        video.onclick = function(){
-            if(this.style.width == defatulVideoWidth){
-                this.style.width = '1024px';
-                this.style.height = '640px';
-            }else{
-                this.style.width = defatulVideoWidth;
-                this.style.height = defatulVideoHeight;
+        if(stream.type == 'screen'){
+            var video = document.createElement('video');
+            video.setAttribute('autoplay','');
+            video.setAttribute('id',id);
+            video.setAttribute('style','width:'+defatulVideoWidth+' ; height:'+defatulVideoHeight+'')
+            video.onclick = function(){
+                if(this.style.width == defatulVideoWidth){
+                    this.style.width = '1024px';
+                    this.style.height = '640px';
+                }else{
+                    this.style.width = defatulVideoWidth;
+                    this.style.height = defatulVideoHeight;
+                }
             }
+            attachMediaStream(video, stream);
+            divVideo[0].appendChild(video);
+        }else{
+            var audio = document.createElement('audio');
+            audio.setAttribute('autoplay','');
+            audio.setAttribute('controls','');
+            audio.setAttribute('id',id);
+            attachMediaStream(audio, stream);
+            divAudio[0].appendChild(audio);
         }
-        attachMediaStream(video, stream);
-        divVideo[0].appendChild(video);
-
-    }
-
-    addAudio = function(stream, id){
-        // var audio = document.createElement('audio');
-        // audio.setAttribute('controls','');
-        // audio.setAttribute('autoplay','');
-        // audio.setAttribute('id',id)
-        // attachMediaStream(audio, stream);
-        // divAudio[0].appendChild(audio);
-
-        addVideo(stream, id);
     }
 
     addFile = function(element){
@@ -69,10 +64,10 @@ $(function(){
     }
 
     removeVideo = function(id){
-        var video = $('#'+id+'_screen');
-        video.remove();
-        video = $('#'+id+'_audio');
-        video.remove();
+        var screenElement = $('#'+id+'_screen');
+        screenElement.remove();
+        var audioElement = $('#'+id+'_audio');
+        audioElement.remove();
     }
 
     getSelectedFileName = function(){
@@ -91,24 +86,6 @@ $(function(){
                 }
             }
         }
-    });
-
-    btnDiconnectSocket.on('click',function(){
-        if(socket)
-            socket.disconnect();
-
-        removeVideo('self_stream');
-        for(var key in peers)
-            removeVideo(key);
-
-        for(var key in localStream)
-            if(localStream[key]) localStream[key].stop();
-
-        delete peers;
-        peers = {};
-
-        location.href = '/rtc/rooms.html?user=';
-
     });
 
     btnStream.on('click',function(){
@@ -149,6 +126,8 @@ $(function(){
         var reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onload = onReadAsDataURL;
+        btnFileTranster.hide();
+        setTimeout(function(){ btnFileTranster.show();}, 5000);
     });
 
 })

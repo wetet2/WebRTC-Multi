@@ -13,7 +13,7 @@ https://localhost:10280/
 
 **To use screen-sharing feature,** you have to install chrome extension below,
 
-https://chrome.google.com/webstore/detail/screen-capturing-test/efgmfmhdfdjomdeogeoedbblfjanfdjj
+[Install Screen-sharing extension](https://chrome.google.com/webstore/detail/screen-capturing-test/efgmfmhdfdjomdeogeoedbblfjanfdjj)
 
 **To use webcam feature,** you have to set your webcam device up
 

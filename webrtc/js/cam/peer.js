@@ -33,7 +33,7 @@ $(function(){
 
     startStream = function(){
 
-        ////////// Using Webcam  ///////////
+        ////////// Using Webcam  /////////// 
         navigator.getUserMedia({
             audio: true,
             video: {

@@ -19,4 +19,4 @@ https://chrome.google.com/webstore/detail/screen-capturing-test/efgmfmhdfdjomdeo
 
 This has two kind of web page. One is showing a list of rooms (rooms.html) and the other one is actually working with WebRTC (main.html / main_cam.html)
 
-If you have any question, please leave you message in Issues
+If you have any question, please leave your message in Issues

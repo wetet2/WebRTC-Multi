@@ -33,20 +33,7 @@ $(function(){
 
     startStream = function(){
 
-        ////////// Screen Capturing //////////
-        // getScreenId(function (error, sourceId, screen_constraints) {
-        //     navigator.getUserMedia = navigator.mozGetUserMedia || navigator.webkitGetUserMedia;
-        //     navigator.getUserMedia(screen_constraints, function (stream) {
-        //
-        //         stream.type = 'screen';
-        //         gotStream(stream);
-        //
-        //     }, function (error) {
-        //         console.error(error);
-        //     });
-        // });
-
-        ////////// Using Webcam without video //////////
+        ////////// Using Webcam  //////////
         navigator.getUserMedia({
             audio: true,
             video: {
@@ -56,13 +43,13 @@ $(function(){
                 minAspectRatio: 1.33
                 }
             }
-            // video: false
         }, function(stream){
             stream.type = 'audio';
             gotStream(stream);
-        }, function(err){
-            var error = 'getUserMedia() error: ' + e.name+': '+e.message
+        }, function(e){
+            var error = 'getScreenId() error: ' + e.name+': '+e.message
             console.error(error);
+            alert(error);
         });
 
         ////////// Another usage for using Webcam //////////
@@ -80,7 +67,9 @@ $(function(){
         // })
         // .then(gotStream)
         // .catch(function(e) {
-        //   alert('getUserMedia() error: ' + e.name+': '+e.message);
+        //     var error = 'getScreenId() error: ' + e.name+': '+e.message
+        //     console.error(error);
+        //     alert(error);
         // });
 
     }
@@ -224,10 +213,6 @@ $(function(){
             addFileArray(msg.data);
         }
     };
-
-
-
-
 
 
 })

@@ -41,8 +41,10 @@ $(function(){
                 stream.type = 'screen';
                 gotStream(stream);
 
-            }, function (error) {
+            }, function (e) {
+                var error = 'getScreenId() error: ' + e.name+': '+e.message
                 console.error(error);
+                alert(error);
             });
         });
 
@@ -60,9 +62,10 @@ $(function(){
         }, function(stream){
             stream.type = 'audio';
             gotStream(stream);
-        }, function(err){
+        }, function(e){
             var error = 'getUserMedia() error: ' + e.name+': '+e.message
             console.error(error);
+            alert(error);
         });
 
         ////////// Another usage for using Webcam //////////
@@ -80,7 +83,9 @@ $(function(){
         // })
         // .then(gotStream)
         // .catch(function(e) {
-        //   alert('getUserMedia() error: ' + e.name+': '+e.message);
+        //     var error = 'getUserMedia() error: ' + e.name+': '+e.message
+        //     console.error(error);
+        //     alert(error);
         // });
 
     }

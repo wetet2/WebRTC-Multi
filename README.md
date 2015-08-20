@@ -2,14 +2,14 @@
 Mixed webrtc features;
 multi chatting, multi webcam, multi file sharing, multi screen sharing with chrome extension on each room
 
-**To start nodejs server**
+**To start nodejs server,**
 ```
 $ node server.js
 ```
 
 **To test webrtc features in this project,**
 
-https://localhost:10280
+https://localhost:10280/
 
 **To use screen-sharing feature,** you have to install chrome extension below,
 

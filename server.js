@@ -21,6 +21,7 @@ app.set('view engine', 'ejs');
 
 
 app.use(express.static(path.join(__dirname, 'webrtc')));
+app.use('/bower_components', express.static(path.join(__dirname,'/bower_components')));
 app.use(bodyParser.json());
 app.use(function(req,res,next){
     res.setHeader('Access-Control-Allow-Origin', '*');

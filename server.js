@@ -2,8 +2,9 @@ var fs = require('fs');
 
 var port = 10280;
 var options = {
-    key: fs.readFileSync('ssl/key.pem'),
-    cert:fs.readFileSync('ssl/public.cert')
+    ca: fs.readFileSync('ssl/lesstif-rootca.crt'),
+    key: fs.readFileSync('ssl/lesstif.com.key'),
+    cert:fs.readFileSync('ssl/lesstif.com.crt')
 }
 
 var express = require('express');
